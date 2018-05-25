@@ -31,7 +31,7 @@
   <http://www.gnu.org/licenses/>.
   -------------------------------------------------------------------------*/
 
-#include "Adafruit_NeoPixel.h"
+#include "Adafruit_NeoPixel_simplified.h"
 #include "hexadecimal_colors_to_strings.h"
 
 #if defined(NRF52)
