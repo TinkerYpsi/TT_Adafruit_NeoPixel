@@ -1,17 +1,3 @@
-/*
-  Bunches of definitions for the WS2812 Breakout Board example code
-
-*/
-
-// These are for the cascade function
-#define TOP_DOWN 0
-#define DOWN_TOP 1
-
-/* A world of colors to set your LED to
-  Standard HTML Color Codes sorted by Hex Value
-    to see the colors in action, check out:
-   http://www.w3schools.com/html/html_colorvalues.asp */
-
 #define BLACK			0x000000
 #define NAVY			0x000080
 #define DARKBLUE		0x00008B
