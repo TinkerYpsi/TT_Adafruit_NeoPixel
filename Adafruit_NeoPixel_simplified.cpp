@@ -43,7 +43,7 @@
 #endif
 
 // Constructor when length, pin and type are known at compile-time:
-Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
+Adafruit_NeoPixel_simplified::Adafruit_NeoPixel_simplified(uint16_t n, uint8_t p, neoPixelType t) :
   begun(false), brightness(0), pixels(NULL), endTime(0)
 {
   updateType(t);
@@ -56,7 +56,7 @@ Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
 // read from internal flash memory or an SD card, or arrive via serial
 // command.  If using this constructor, MUST follow up with updateType(),
 // updateLength(), etc. to establish the strand type, length and pin number!
-Adafruit_NeoPixel::Adafruit_NeoPixel() :
+Adafruit_NeoPixel_simplified::Adafruit_NeoPixel_simplified() :
 #ifdef NEO_KHZ400
   is800KHz(true),
 #endif
@@ -65,12 +65,12 @@ Adafruit_NeoPixel::Adafruit_NeoPixel() :
 {
 }
 
-Adafruit_NeoPixel::~Adafruit_NeoPixel() {
+Adafruit_NeoPixel_simplified::~Adafruit_NeoPixel_simplified() {
   if(pixels)   free(pixels);
   if(pin >= 0) pinMode(pin, INPUT);
 }
 
-void Adafruit_NeoPixel::begin(void) {
+void Adafruit_NeoPixel_simplified::begin(void) {
   if(pin >= 0) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
@@ -79,7 +79,7 @@ void Adafruit_NeoPixel::begin(void) {
 
 }
 
-void Adafruit_NeoPixel::updateLength(uint16_t n) {
+void Adafruit_NeoPixel_simplified::updateLength(uint16_t n) {
   if(pixels) free(pixels); // Free existing data (if any)
 
   // Allocate new data -- note: ALL PIXELS ARE CLEARED
@@ -92,7 +92,7 @@ void Adafruit_NeoPixel::updateLength(uint16_t n) {
   }
 }
 
-void Adafruit_NeoPixel::updateType(neoPixelType t) {
+void Adafruit_NeoPixel_simplified::updateType(neoPixelType t) {
   boolean oldThreeBytesPerPixel = (wOffset == rOffset); // false if RGBW
 
   wOffset = (t >> 6) & 0b11; // See notes in header file
@@ -120,7 +120,7 @@ extern "C" void espShow(
   uint8_t pin, uint8_t *pixels, uint32_t numBytes, uint8_t type);
 #endif // ESP8266
 
-void Adafruit_NeoPixel::show(void) {
+void Adafruit_NeoPixel_simplified::show(void) {
 
   if(!pixels) return;
 
@@ -1986,7 +1986,7 @@ void Adafruit_NeoPixel::show(void) {
 }
 
 // Set the output pin number
-void Adafruit_NeoPixel::setPin(uint8_t p) {
+void Adafruit_NeoPixel_simplified::setPin(uint8_t p) {
   if(begun && (pin >= 0)) pinMode(pin, INPUT);
     pin = p;
     if(begun) {
@@ -2000,7 +2000,7 @@ void Adafruit_NeoPixel::setPin(uint8_t p) {
 }
 
 // Set pixel color from separate R,G,B components:
-void Adafruit_NeoPixel::setPixelColor(
+void Adafruit_NeoPixel_simplified::setPixelColor(
  uint16_t n, uint8_t r, uint8_t g, uint8_t b) {
 
   if(n < numLEDs) {
@@ -2022,7 +2022,7 @@ void Adafruit_NeoPixel::setPixelColor(
   }
 }
 
-void Adafruit_NeoPixel::setPixelColor(
+void Adafruit_NeoPixel_simplified::setPixelColor(
  uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
   if(n < numLEDs) {
@@ -2046,7 +2046,7 @@ void Adafruit_NeoPixel::setPixelColor(
 }
 
 // Set pixel color from 'packed' 32-bit RGB color:
-void Adafruit_NeoPixel::setPixelColor(uint16_t n, uint32_t c) {
+void Adafruit_NeoPixel_simplified::setPixelColor(uint16_t n, uint32_t c) {
   if(n < numLEDs) {
     uint8_t *p,
       r = (uint8_t)(c >> 16),
@@ -2072,18 +2072,18 @@ void Adafruit_NeoPixel::setPixelColor(uint16_t n, uint32_t c) {
 
 // Convert separate R,G,B into packed 32-bit RGB color.
 // Packed format is always RGB, regardless of LED strand color order.
-uint32_t Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b) {
+uint32_t Adafruit_NeoPixel_simplified::Color(uint8_t r, uint8_t g, uint8_t b) {
   return ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
 // Convert separate R,G,B,W into packed 32-bit WRGB color.
 // Packed format is always WRGB, regardless of LED strand color order.
-uint32_t Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+uint32_t Adafruit_NeoPixel_simplified::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
 // Query color from previously-set pixel (returns packed 32-bit RGB value)
-uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
+uint32_t Adafruit_NeoPixel_simplified::getPixelColor(uint16_t n) const {
   if(n >= numLEDs) return 0; // Out of bounds, return no color.
 
   uint8_t *p;
@@ -2124,11 +2124,11 @@ uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
 // Returns pointer to pixels[] array.  Pixel data is stored in device-
 // native format and is not translated here.  Application will need to be
 // aware of specific pixel data format and handle colors appropriately.
-uint8_t *Adafruit_NeoPixel::getPixels(void) const {
+uint8_t *Adafruit_NeoPixel_simplified::getPixels(void) const {
   return pixels;
 }
 
-uint16_t Adafruit_NeoPixel::numPixels(void) const {
+uint16_t Adafruit_NeoPixel_simplified::numPixels(void) const {
   return numLEDs;
 }
 
@@ -2144,7 +2144,7 @@ uint16_t Adafruit_NeoPixel::numPixels(void) const {
 // the limited number of steps (quantization) in the old data will be
 // quite visible in the re-scaled version.  For a non-destructive
 // change, you'll need to re-render the full strip data.  C'est la vie.
-void Adafruit_NeoPixel::setBrightness(uint8_t b) {
+void Adafruit_NeoPixel_simplified::setBrightness(uint8_t b) {
   // Stored brightness value is different than what's passed.
   // This simplifies the actual scaling math later, allowing a fast
   // 8x8-bit multiply and taking the MSB.  'brightness' is a uint8_t,
@@ -2170,11 +2170,11 @@ void Adafruit_NeoPixel::setBrightness(uint8_t b) {
 }
 
 //Return the brightness value
-uint8_t Adafruit_NeoPixel::getBrightness(void) const {
+uint8_t Adafruit_NeoPixel_simplified::getBrightness(void) const {
   return brightness - 1;
 }
 
-void Adafruit_NeoPixel::clear() {
+void Adafruit_NeoPixel_simplified::clear() {
   memset(pixels, 0, numBytes);
 }
 
@@ -2229,10 +2229,10 @@ static const uint8_t PROGMEM _gammaTable[256] = {
   182,184,186,188,191,193,195,197,199,202,204,206,209,211,213,215,
   218,220,223,225,227,230,232,235,237,240,242,245,247,250,252,255};
 
-uint8_t Adafruit_NeoPixel::sine8(uint8_t x) const {
+uint8_t Adafruit_NeoPixel_simplified::sine8(uint8_t x) const {
   return pgm_read_byte(&_sineTable[x]); // 0-255 in, 0-255 out
 }
 
-uint8_t Adafruit_NeoPixel::gamma8(uint8_t x) const {
+uint8_t Adafruit_NeoPixel_simplified::gamma8(uint8_t x) const {
   return pgm_read_byte(&_gammaTable[x]); // 0-255 in, 0-255 out
 }

@@ -4,7 +4,7 @@
 # Class
 #######################################
 
-Adafruit_NeoPixel	KEYWORD1
+Adafruit_NeoPixel_simplified	KEYWORD1
 
 #######################################
 # Methods and Functions 
