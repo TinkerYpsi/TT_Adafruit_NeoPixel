@@ -22,11 +22,11 @@ Currently a modified version of Adafruit NeoPixel library with improved function
 Check list of colors in keywords.txt to use custom colors (like teal and maroon) without knowing individual RGB values
 Refer to simple_colors in examples for reference
 ```c
-* void colorWipe(Color COLOR, int delaytime);  // fill the LEDs one after the other with a color
-* void theaterChase(Color COLOR, int delaytime); // displays theater-style crawling lights in color of choice
-* void rainbow(int delaytime); // slowly changes colors leaving LED ring/strip/matrix with two-tone lights
-* void theaterChaseRainbow(int delaytime); // like theaterChase() and rainbow() mixed together
-* void rainbowCycle(int delaytime); // like rainbow() but this makes the rainbow equally distributed throughout
+void colorWipe(Color COLOR, int delaytime);  // fill the LEDs one after the other with a color
+void theaterChase(Color COLOR, int delaytime); // displays theater-style crawling lights in color of choice
+void rainbow(int delaytime); // slowly changes colors leaving LED ring/strip/matrix with two-tone lights
+void theaterChaseRainbow(int delaytime); // like theaterChase() and rainbow() mixed together
+void rainbowCycle(int delaytime); // like rainbow() but this makes the rainbow equally distributed throughout
 ```
 
 ---
