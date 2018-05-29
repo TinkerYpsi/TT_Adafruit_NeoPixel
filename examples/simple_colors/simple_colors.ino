@@ -15,7 +15,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel_simplified strip = Adafruit_NeoPixel_simplified(60, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -39,54 +39,14 @@ void loop() {
   colorWipe(TEAL, 30);
   colorWipe(MAROON, 30);
   colorWipe(IVORY, 30);
+
+  theaterChase(NAVY, 30);
+  theaterChase(LIMEGREEN, 30);
+  rainbowCycle(5);
+  theaterChaseRainbow(50);
+  rainbow(50);
+
   colorWipe(strip.Color(255, 0, 0), 30); // Red
   colorWipe(strip.Color(0, 255, 0), 30); // Green
   colorWipe(strip.Color(0, 0, 255), 30); // Blue
-
-
-  theaterChase(NAVY, 30);
-  theaterChase(LIMEGREEEN, 30);
-  theaterChase(strip.Color(255, 0, 0), 30); // Red
-  theaterChase(strip.Color(0, 255, 0), 30); // Green
-  theaterChase(strip.Color(0, 0, 255), 30); // Blue
-  
-}
-
-// Fill the dots one after the other with a color
-void colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
-  }
-}
-
-void rainbow(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256; j++) {
-    for(i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel((i+j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-//Theatre-style crawling lights.
-void theaterChase(uint32_t c, uint8_t wait) {
-  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
-    for (int q=0; q < 3; q++) {
-      for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        strip.setPixelColor(i+q, c);    //turn every third pixel on
-      }
-      strip.show();
-
-      delay(wait);
-
-      for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        strip.setPixelColor(i+q, 0);        //turn every third pixel off
-      }
-    }
-  }
 }

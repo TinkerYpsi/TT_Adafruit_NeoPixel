@@ -125,6 +125,14 @@ class Adafruit_NeoPixel_simplified {
   ~Adafruit_NeoPixel_simplified();
 
   void
+    // added public functions
+    // ===================================================================
+    colorWipe(uint32_t c, uint8_t wait);
+    rainbow(uint8_t wait);
+    theaterChase(uint32_t c, uint8_t wait);
+    theaterChaseRainbow(uint8_t wait);
+    rainbowCycle(uint8_t wait);
+    // ===================================================================
     begin(void),
     show(void),
     setPin(uint8_t p),
@@ -153,6 +161,7 @@ class Adafruit_NeoPixel_simplified {
     canShow(void) { return (micros() - endTime) >= 300L; }
 
  protected:
+   uint32_t Wheel(byte WheelPos);
 
   boolean
 #ifdef NEO_KHZ400  // If 400 KHz NeoPixel support enabled...
