@@ -81,7 +81,7 @@ void Adafruit_NeoPixel_simplified::begin(void) {
 
 // Fill the dots one after the other with a color
 void Adafruit_NeoPixel_simplified::colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i = 0; i < strip.numPixels(); i++) {
+  for(uint16_t i = 0; i < numPixels(); i++) {
     setPixelColor(i, c);
     show();
     delay(wait);
@@ -105,8 +105,8 @@ void Adafruit_NeoPixel_simplified::rainbowCycle(uint8_t wait) {
   uint16_t i, j;
 
   for(j = 0; j < 256 * 5; j++) { // 5 cycles of all colors on wheel
-    for(i = 0; i < strip.numPixels(); i++) {
-      setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
+    for(i = 0; i < numPixels(); i++) {
+      setPixelColor(i, Wheel(((i * 256 / numPixels()) + j) & 255));
     }
     show();
     delay(wait);
@@ -125,7 +125,7 @@ void Adafruit_NeoPixel_simplified::theaterChase(uint32_t c, uint8_t wait) {
 
       delay(wait);
 
-      for (uint16_t i = 0; i < strip.numPixels(); i=i+3) {
+      for (uint16_t i = 0; i < numPixels(); i=i+3) {
         setPixelColor(i+q, 0);        //turn every third pixel off
       }
     }
@@ -157,7 +157,7 @@ void Adafruit_NeoPixel_simplified::theaterChaseRainbow(uint8_t wait) {
 
       delay(wait);
 
-      for (uint16_t i = 0; i < strip.numPixels(); i += 3) {
+      for (uint16_t i = 0; i < numPixels(); i += 3) {
         setPixelColor(i + q, 0);        //turn every third pixel off
       }
     }

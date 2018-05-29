@@ -124,15 +124,16 @@ class Adafruit_NeoPixel_simplified {
   Adafruit_NeoPixel_simplified(void);
   ~Adafruit_NeoPixel_simplified();
 
+  // added library functions
+  // ===========================================================================
+  void colorWipe(uint32_t c, uint8_t wait);
+  void rainbow(uint8_t wait);
+  void theaterChase(uint32_t c, uint8_t wait);
+  void theaterChaseRainbow(uint8_t wait);
+  void rainbowCycle(uint8_t wait);
+  // ===========================================================================
+
   void
-    // added public functions
-    // ===================================================================
-    colorWipe(uint32_t c, uint8_t wait);
-    rainbow(uint8_t wait);
-    theaterChase(uint32_t c, uint8_t wait);
-    theaterChaseRainbow(uint8_t wait);
-    rainbowCycle(uint8_t wait);
-    // ===================================================================
     begin(void),
     show(void),
     setPin(uint8_t p),

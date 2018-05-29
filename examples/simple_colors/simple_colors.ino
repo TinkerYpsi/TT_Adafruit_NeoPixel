@@ -36,17 +36,17 @@ void setup() {
 
 void loop() {
   strip.setBrightness(50);
-  colorWipe(TEAL, 30);
-  colorWipe(MAROON, 30);
-  colorWipe(IVORY, 30);
+  strip.colorWipe(TEAL, 30);
+  strip.colorWipe(MAROON, 30);
+  strip.colorWipe(IVORY, 30);
 
-  theaterChase(NAVY, 30);
-  theaterChase(LIMEGREEN, 30);
-  rainbowCycle(5);
-  theaterChaseRainbow(50);
-  rainbow(50);
+  strip.theaterChase(NAVY, 30);
+  strip.theaterChase(LIMEGREEN, 30);
+  strip.rainbowCycle(5);
+  strip.theaterChaseRainbow(50);
+  strip.rainbow(50);
 
-  colorWipe(strip.Color(255, 0, 0), 30); // Red
-  colorWipe(strip.Color(0, 255, 0), 30); // Green
-  colorWipe(strip.Color(0, 0, 255), 30); // Blue
+  strip.colorWipe(strip.Color(255, 0, 0), 30); // Red
+  strip.colorWipe(strip.Color(0, 255, 0), 30); // Green
+  strip.colorWipe(strip.Color(0, 0, 255), 30); // Blue
 }
