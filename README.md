@@ -20,6 +20,7 @@ Currently a modified version of Adafruit NeoPixel library with improved function
 ---
 ## New Features
 Check list of colors in keywords.txt to use custom colors (like teal and maroon) without knowing individual RGB values
+
 Refer to simple_colors in examples for reference
 ```c
 void colorWipe(Color COLOR, int delaytime);  // fill the LEDs one after the other with a color
