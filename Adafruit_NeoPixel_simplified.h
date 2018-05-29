@@ -16,8 +16,10 @@
   <http://www.gnu.org/licenses/>.
   --------------------------------------------------------------------*/
 
-#ifndef ADAFRUIT_NEOPIXEL_H
-#define ADAFRUIT_NEOPIXEL_H
+#ifndef ADAFRUIT_NEOPIXEL_SIMPLIFIED_H
+#define ADAFRUIT_NEOPIXEL_SIMPLIFIED_H
+
+#include "hexadecimal_colors_to_strings.h"
 
 #if (ARDUINO >= 100)
  #include <Arduino.h>
@@ -113,14 +115,23 @@ typedef uint16_t neoPixelType;
 typedef uint8_t  neoPixelType;
 #endif
 
-class Adafruit_NeoPixel {
+class Adafruit_NeoPixel_simplified {
 
  public:
 
   // Constructor: number of LEDs, pin number, LED type
-  Adafruit_NeoPixel(uint16_t n, uint8_t p=6, neoPixelType t=NEO_GRB + NEO_KHZ800);
-  Adafruit_NeoPixel(void);
-  ~Adafruit_NeoPixel();
+  Adafruit_NeoPixel_simplified(uint16_t n, uint8_t p=6, neoPixelType t=NEO_GRB + NEO_KHZ800);
+  Adafruit_NeoPixel_simplified(void);
+  ~Adafruit_NeoPixel_simplified();
+
+  // added library functions
+  // ===========================================================================
+  void colorWipe(uint32_t c, uint8_t wait);
+  void rainbow(uint8_t wait);
+  void theaterChase(uint32_t c, uint8_t wait);
+  void theaterChaseRainbow(uint8_t wait);
+  void rainbowCycle(uint8_t wait);
+  // ===========================================================================
 
   void
     begin(void),
@@ -151,6 +162,7 @@ class Adafruit_NeoPixel {
     canShow(void) { return (micros() - endTime) >= 300L; }
 
  protected:
+   uint32_t Wheel(byte WheelPos);
 
   boolean
 #ifdef NEO_KHZ400  // If 400 KHz NeoPixel support enabled...

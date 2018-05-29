@@ -31,7 +31,8 @@
   <http://www.gnu.org/licenses/>.
   -------------------------------------------------------------------------*/
 
-#include "Adafruit_NeoPixel.h"
+#include "Adafruit_NeoPixel_simplified.h"
+#include "hexadecimal_colors_to_strings.h"
 
 #if defined(NRF52)
 #include "nrf.h"
@@ -42,8 +43,8 @@
 #endif
 
 // Constructor when length, pin and type are known at compile-time:
-Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
-  begun(false), brightness(0), pixels(NULL), endTime(0)  
+Adafruit_NeoPixel_simplified::Adafruit_NeoPixel_simplified(uint16_t n, uint8_t p, neoPixelType t) :
+  begun(false), brightness(0), pixels(NULL), endTime(0)
 {
   updateType(t);
   updateLength(n);
@@ -55,7 +56,7 @@ Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
 // read from internal flash memory or an SD card, or arrive via serial
 // command.  If using this constructor, MUST follow up with updateType(),
 // updateLength(), etc. to establish the strand type, length and pin number!
-Adafruit_NeoPixel::Adafruit_NeoPixel() :
+Adafruit_NeoPixel_simplified::Adafruit_NeoPixel_simplified() :
 #ifdef NEO_KHZ400
   is800KHz(true),
 #endif
@@ -64,12 +65,12 @@ Adafruit_NeoPixel::Adafruit_NeoPixel() :
 {
 }
 
-Adafruit_NeoPixel::~Adafruit_NeoPixel() {
+Adafruit_NeoPixel_simplified::~Adafruit_NeoPixel_simplified() {
   if(pixels)   free(pixels);
   if(pin >= 0) pinMode(pin, INPUT);
 }
 
-void Adafruit_NeoPixel::begin(void) {
+void Adafruit_NeoPixel_simplified::begin(void) {
   if(pin >= 0) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
@@ -78,7 +79,93 @@ void Adafruit_NeoPixel::begin(void) {
 
 }
 
-void Adafruit_NeoPixel::updateLength(uint16_t n) {
+// Fill the dots one after the other with a color
+void Adafruit_NeoPixel_simplified::colorWipe(uint32_t c, uint8_t wait) {
+  for(uint16_t i = 0; i < numPixels(); i++) {
+    setPixelColor(i, c);
+    show();
+    delay(wait);
+  }
+}
+
+void Adafruit_NeoPixel_simplified::rainbow(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j = 0; j < 256; j++) {
+    for(i = 0; i < numPixels(); i++) {
+      setPixelColor(i, Wheel((i + j) & 255));
+    }
+    show();
+    delay(wait);
+  }
+}
+
+// Slightly different, this makes the rainbow equally distributed throughout
+void Adafruit_NeoPixel_simplified::rainbowCycle(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j = 0; j < 256 * 5; j++) { // 5 cycles of all colors on wheel
+    for(i = 0; i < numPixels(); i++) {
+      setPixelColor(i, Wheel(((i * 256 / numPixels()) + j) & 255));
+    }
+    show();
+    delay(wait);
+  }
+}
+
+
+//Theatre-style crawling lights.
+void Adafruit_NeoPixel_simplified::theaterChase(uint32_t c, uint8_t wait) {
+  for (int j = 0; j < 10; j++) {  //do 10 cycles of chasing
+    for (int q = 0; q < 3; q++) {
+      for (uint16_t i = 0; i < numPixels(); i += 3) {
+        setPixelColor(i + q, c);    //turn every third pixel on
+      }
+      show();
+
+      delay(wait);
+
+      for (uint16_t i = 0; i < numPixels(); i=i+3) {
+        setPixelColor(i+q, 0);        //turn every third pixel off
+      }
+    }
+  }
+}
+
+uint32_t Adafruit_NeoPixel_simplified::Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if(WheelPos < 85) {
+    return Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  else if(WheelPos < 170) {
+    WheelPos -= 85;
+    return Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  else {
+    WheelPos -= 170;
+    return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  }
+}
+
+void Adafruit_NeoPixel_simplified::theaterChaseRainbow(uint8_t wait) {
+  for (int j = 0; j < 256; j++) {     // cycle all 256 colors in the wheel
+    for (int q = 0; q < 3; q++) {
+      for (uint16_t i = 0; i < numPixels(); i += 3) {
+        setPixelColor(i + q, Wheel( (i + j) % 255));    //turn every third pixel on
+      }
+      show();
+
+      delay(wait);
+
+      for (uint16_t i = 0; i < numPixels(); i += 3) {
+        setPixelColor(i + q, 0);        //turn every third pixel off
+      }
+    }
+  }
+}
+
+
+void Adafruit_NeoPixel_simplified::updateLength(uint16_t n) {
   if(pixels) free(pixels); // Free existing data (if any)
 
   // Allocate new data -- note: ALL PIXELS ARE CLEARED
@@ -91,7 +178,7 @@ void Adafruit_NeoPixel::updateLength(uint16_t n) {
   }
 }
 
-void Adafruit_NeoPixel::updateType(neoPixelType t) {
+void Adafruit_NeoPixel_simplified::updateType(neoPixelType t) {
   boolean oldThreeBytesPerPixel = (wOffset == rOffset); // false if RGBW
 
   wOffset = (t >> 6) & 0b11; // See notes in header file
@@ -110,7 +197,7 @@ void Adafruit_NeoPixel::updateType(neoPixelType t) {
   }
 }
 
-#if defined(ESP8266) 
+#if defined(ESP8266)
 // ESP8266 show() is external to enforce ICACHE_RAM_ATTR execution
 extern "C" void ICACHE_RAM_ATTR espShow(
   uint8_t pin, uint8_t *pixels, uint32_t numBytes, uint8_t type);
@@ -119,7 +206,7 @@ extern "C" void espShow(
   uint8_t pin, uint8_t *pixels, uint32_t numBytes, uint8_t type);
 #endif // ESP8266
 
-void Adafruit_NeoPixel::show(void) {
+void Adafruit_NeoPixel_simplified::show(void) {
 
   if(!pixels) return;
 
@@ -1207,12 +1294,12 @@ void Adafruit_NeoPixel::show(void) {
 // [[[Begin of the Neopixel NRF52 EasyDMA implementation
 //                                    by the Hackerspace San Salvador]]]
 // This technique uses the PWM peripheral on the NRF52. The PWM uses the
-// EasyDMA feature included on the chip. This technique loads the duty 
-// cycle configuration for each cycle when the PWM is enabled. For this 
+// EasyDMA feature included on the chip. This technique loads the duty
+// cycle configuration for each cycle when the PWM is enabled. For this
 // to work we need to store a 16 bit configuration for each bit of the
 // RGB(W) values in the pixel buffer.
 // Comparator values for the PWM were hand picked and are guaranteed to
-// be 100% organic to preserve freshness and high accuracy. Current 
+// be 100% organic to preserve freshness and high accuracy. Current
 // parameters are:
 //   * PWM Clock: 16Mhz
 //   * Minimum step time: 62.5ns
@@ -1242,13 +1329,13 @@ void Adafruit_NeoPixel::show(void) {
 #define CTOPVAL_400KHz         40UL            // 2.5us
 
 // ---------- END Constants for the EasyDMA implementation -------------
-// 
+//
 // If there is no device available an alternative cycle-counter
 // implementation is tried.
 // The nRF52832 runs with a fixed clock of 64Mhz. The alternative
 // implementation is the same as the one used for the Teensy 3.0/1/2 but
 // with the Nordic SDK HAL & registers syntax.
-// The number of cycles was hand picked and is guaranteed to be 100% 
+// The number of cycles was hand picked and is guaranteed to be 100%
 // organic to preserve freshness and high accuracy.
 // ---------- BEGIN Constants for cycle counter implementation ---------
 #define CYCLES_800_T0H  18  // ~0.36 uS
@@ -1289,7 +1376,7 @@ void Adafruit_NeoPixel::show(void) {
       break;
     }
   }
-  
+
   // only malloc if there is PWM device available
   if ( pwm != NULL ) {
     #ifdef ARDUINO_FEATHER52 // use thread-safe malloc
@@ -1970,7 +2057,7 @@ void Adafruit_NeoPixel::show(void) {
     }
   }
 
-#else 
+#else
 #error Architecture not supported
 #endif
 
@@ -1985,7 +2072,7 @@ void Adafruit_NeoPixel::show(void) {
 }
 
 // Set the output pin number
-void Adafruit_NeoPixel::setPin(uint8_t p) {
+void Adafruit_NeoPixel_simplified::setPin(uint8_t p) {
   if(begun && (pin >= 0)) pinMode(pin, INPUT);
     pin = p;
     if(begun) {
@@ -1999,7 +2086,7 @@ void Adafruit_NeoPixel::setPin(uint8_t p) {
 }
 
 // Set pixel color from separate R,G,B components:
-void Adafruit_NeoPixel::setPixelColor(
+void Adafruit_NeoPixel_simplified::setPixelColor(
  uint16_t n, uint8_t r, uint8_t g, uint8_t b) {
 
   if(n < numLEDs) {
@@ -2021,7 +2108,7 @@ void Adafruit_NeoPixel::setPixelColor(
   }
 }
 
-void Adafruit_NeoPixel::setPixelColor(
+void Adafruit_NeoPixel_simplified::setPixelColor(
  uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
   if(n < numLEDs) {
@@ -2045,7 +2132,7 @@ void Adafruit_NeoPixel::setPixelColor(
 }
 
 // Set pixel color from 'packed' 32-bit RGB color:
-void Adafruit_NeoPixel::setPixelColor(uint16_t n, uint32_t c) {
+void Adafruit_NeoPixel_simplified::setPixelColor(uint16_t n, uint32_t c) {
   if(n < numLEDs) {
     uint8_t *p,
       r = (uint8_t)(c >> 16),
@@ -2071,18 +2158,18 @@ void Adafruit_NeoPixel::setPixelColor(uint16_t n, uint32_t c) {
 
 // Convert separate R,G,B into packed 32-bit RGB color.
 // Packed format is always RGB, regardless of LED strand color order.
-uint32_t Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b) {
+uint32_t Adafruit_NeoPixel_simplified::Color(uint8_t r, uint8_t g, uint8_t b) {
   return ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
 // Convert separate R,G,B,W into packed 32-bit WRGB color.
 // Packed format is always WRGB, regardless of LED strand color order.
-uint32_t Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+uint32_t Adafruit_NeoPixel_simplified::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
 // Query color from previously-set pixel (returns packed 32-bit RGB value)
-uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
+uint32_t Adafruit_NeoPixel_simplified::getPixelColor(uint16_t n) const {
   if(n >= numLEDs) return 0; // Out of bounds, return no color.
 
   uint8_t *p;
@@ -2123,11 +2210,11 @@ uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
 // Returns pointer to pixels[] array.  Pixel data is stored in device-
 // native format and is not translated here.  Application will need to be
 // aware of specific pixel data format and handle colors appropriately.
-uint8_t *Adafruit_NeoPixel::getPixels(void) const {
+uint8_t *Adafruit_NeoPixel_simplified::getPixels(void) const {
   return pixels;
 }
 
-uint16_t Adafruit_NeoPixel::numPixels(void) const {
+uint16_t Adafruit_NeoPixel_simplified::numPixels(void) const {
   return numLEDs;
 }
 
@@ -2143,7 +2230,7 @@ uint16_t Adafruit_NeoPixel::numPixels(void) const {
 // the limited number of steps (quantization) in the old data will be
 // quite visible in the re-scaled version.  For a non-destructive
 // change, you'll need to re-render the full strip data.  C'est la vie.
-void Adafruit_NeoPixel::setBrightness(uint8_t b) {
+void Adafruit_NeoPixel_simplified::setBrightness(uint8_t b) {
   // Stored brightness value is different than what's passed.
   // This simplifies the actual scaling math later, allowing a fast
   // 8x8-bit multiply and taking the MSB.  'brightness' is a uint8_t,
@@ -2169,11 +2256,11 @@ void Adafruit_NeoPixel::setBrightness(uint8_t b) {
 }
 
 //Return the brightness value
-uint8_t Adafruit_NeoPixel::getBrightness(void) const {
+uint8_t Adafruit_NeoPixel_simplified::getBrightness(void) const {
   return brightness - 1;
 }
 
-void Adafruit_NeoPixel::clear() {
+void Adafruit_NeoPixel_simplified::clear() {
   memset(pixels, 0, numBytes);
 }
 
@@ -2228,11 +2315,10 @@ static const uint8_t PROGMEM _gammaTable[256] = {
   182,184,186,188,191,193,195,197,199,202,204,206,209,211,213,215,
   218,220,223,225,227,230,232,235,237,240,242,245,247,250,252,255};
 
-uint8_t Adafruit_NeoPixel::sine8(uint8_t x) const {
+uint8_t Adafruit_NeoPixel_simplified::sine8(uint8_t x) const {
   return pgm_read_byte(&_sineTable[x]); // 0-255 in, 0-255 out
 }
 
-uint8_t Adafruit_NeoPixel::gamma8(uint8_t x) const {
+uint8_t Adafruit_NeoPixel_simplified::gamma8(uint8_t x) const {
   return pgm_read_byte(&_gammaTable[x]); // 0-255 in, 0-255 out
 }
-
