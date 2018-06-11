@@ -2,7 +2,7 @@
  * This example was developed by the Hackerspace San Salvador to demonstrate
  * the simultaneous use of the NeoPixel library and the Bluetooth SoftDevice.
  * To compile this example you'll need to add support for the NRF52 based
- * following the instructions at: 
+ * following the instructions at:
  *  https://github.com/sandeepmistry/arduino-nRF5
  * Or adding the following URL to the board manager URLs on Arduino preferences:
  *  https://sandeepmistry.github.io/arduino-nRF5/package_nRF5_boards_index.json
@@ -19,7 +19,7 @@
 #include <SPI.h>
 #include <BLEPeripheral.h>
 #include "BLESerial.h"
-#include <Adafruit_NeoPixel.h>
+#include <TT_Adafruit_Neopixel.h>
 
 #define PIN 15
 
@@ -31,7 +31,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(64, PIN, NEO_GRB + NEO_KHZ800);
+TT_Adafruit_Neopixel strip = TT_Adafruit_Neopixel(64, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -45,7 +45,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(64, PIN, NEO_GRB + NEO_KHZ800);
 
 // create ble serial instance, see pinouts above
 BLESerial BLESerial(BLE_REQ, BLE_RDY, BLE_RST);
-            
+
 uint8_t current_state = 0;
 uint8_t rgb_values[3];
 

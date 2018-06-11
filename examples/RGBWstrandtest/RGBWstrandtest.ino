@@ -1,4 +1,4 @@
-#include <Adafruit_NeoPixel.h>
+#include <TT_Adafruit_Neopixel.h>
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
@@ -9,7 +9,7 @@
 
 #define BRIGHTNESS 50
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
+TT_Adafruit_Neopixel strip = TT_Adafruit_Neopixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
 
 byte neopix_gamma[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -48,9 +48,9 @@ void loop() {
   colorWipe(strip.Color(0, 0, 255), 50); // Blue
   colorWipe(strip.Color(0, 0, 0, 255), 50); // White
 
-  whiteOverRainbow(20,75,5);  
+  whiteOverRainbow(20,75,5);
 
-  pulseWhite(5); 
+  pulseWhite(5);
 
   // fullWhite();
   // delay(2000);
@@ -95,7 +95,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
   int redVal, greenVal, blueVal;
 
   for(int k = 0 ; k < rainbowLoops ; k ++){
-    
+
     for(int j=0; j<256; j++) { // 5 cycles of all colors on wheel
 
       for(int i=0; i< strip.numPixels(); i++) {
@@ -123,7 +123,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
         strip.show();
         delay(wait);
     }
-  
+
   }
 
 
@@ -157,7 +157,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
 }
 
 void whiteOverRainbow(uint8_t wait, uint8_t whiteSpeed, uint8_t whiteLength ) {
-  
+
   if(whiteLength >= strip.numPixels()) whiteLength = strip.numPixels() - 1;
 
   int head = whiteLength - 1;
@@ -178,7 +178,7 @@ void whiteOverRainbow(uint8_t wait, uint8_t whiteSpeed, uint8_t whiteLength ) {
         else{
           strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
         }
-        
+
       }
 
       if(millis() - lastTime > whiteSpeed) {
@@ -191,17 +191,17 @@ void whiteOverRainbow(uint8_t wait, uint8_t whiteSpeed, uint8_t whiteLength ) {
       }
 
       if(loopNum == loops) return;
-    
+
       head%=strip.numPixels();
       tail%=strip.numPixels();
         strip.show();
         delay(wait);
     }
   }
-  
+
 }
 void fullWhite() {
-  
+
     for(uint16_t i=0; i<strip.numPixels(); i++) {
         strip.setPixelColor(i, strip.Color(0,0,0, 255 ) );
     }
@@ -258,4 +258,3 @@ uint8_t green(uint32_t c) {
 uint8_t blue(uint32_t c) {
   return (c);
 }
-

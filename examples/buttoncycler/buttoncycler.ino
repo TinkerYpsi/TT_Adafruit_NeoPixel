@@ -3,7 +3,7 @@
 // press the button it will change to a new pixel animation.  Note that you need to press the
 // button once to start the first animation!
 
-#include <Adafruit_NeoPixel.h>
+#include <TT_Adafruit_Neopixel.h>
 
 #define BUTTON_PIN   2    // Digital IO pin connected to the button.  This will be
                           // driven with a pull-up resistor so the switch should
@@ -21,7 +21,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream, correct for neopixel stick
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+TT_Adafruit_Neopixel strip = TT_Adafruit_Neopixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 bool oldState = HIGH;
 int showType = 0;
