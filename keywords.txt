@@ -1,14 +1,14 @@
 #######################################
 # Syntax Coloring Map For Adafruit_NeoPixel
-####################################### 
+#######################################
 # Class
 #######################################
 
-Adafruit_NeoPixel_simplified	KEYWORD1
+TT_Adafruit_Neopixel	KEYWORD1
 
 #######################################
-# Methods and Functions 
-#######################################	
+# Methods and Functions
+#######################################
 
 setPixelColor	KEYWORD2
 setPin			KEYWORD2
