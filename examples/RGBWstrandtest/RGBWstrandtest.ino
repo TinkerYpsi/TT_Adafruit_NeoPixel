@@ -1,4 +1,4 @@
-#include <TT_Adafruit_Neopixel.h>
+#include <TT_Adafruit_NeoPixel.h>
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
@@ -9,7 +9,7 @@
 
 #define BRIGHTNESS 50
 
-TT_Adafruit_Neopixel strip = TT_Adafruit_Neopixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
+TT_Adafruit_NeoPixel strip = TT_Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
 
 byte neopix_gamma[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,

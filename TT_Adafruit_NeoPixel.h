@@ -16,8 +16,8 @@
   <http://www.gnu.org/licenses/>.
   --------------------------------------------------------------------*/
 
-#ifndef TT_ADAFRUIT_NEOPIXEL_H
-#define TT_ADAFRUIT_NEOPIXEL_H
+#ifndef TT_Adafruit_NeoPixel_H
+#define TT_Adafruit_NeoPixel_H
 
 #include "hexadecimal_colors_to_strings.h"
 
@@ -115,14 +115,14 @@ typedef uint16_t neoPixelType;
 typedef uint8_t  neoPixelType;
 #endif
 
-class TT_Adafruit_Neopixel {
+class TT_Adafruit_NeoPixel {
 
  public:
 
   // Constructor: number of LEDs, pin number, LED type
-  TT_Adafruit_Neopixel(uint16_t n, uint8_t p=6, neoPixelType t=NEO_GRB + NEO_KHZ800);
-  TT_Adafruit_Neopixel(void);
-  ~TT_Adafruit_Neopixel();
+  TT_Adafruit_NeoPixel(uint16_t n, uint8_t p=6, neoPixelType t=NEO_GRB + NEO_KHZ800);
+  TT_Adafruit_NeoPixel(void);
+  ~TT_Adafruit_NeoPixel();
 
   // added library functions
   // ===========================================================================

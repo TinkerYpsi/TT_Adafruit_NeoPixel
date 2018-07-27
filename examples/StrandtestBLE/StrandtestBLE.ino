@@ -19,7 +19,7 @@
 #include <SPI.h>
 #include <BLEPeripheral.h>
 #include "BLESerial.h"
-#include <TT_Adafruit_Neopixel.h>
+#include <TT_Adafruit_NeoPixel.h>
 
 #define PIN 15
 
@@ -31,7 +31,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-TT_Adafruit_Neopixel strip = TT_Adafruit_Neopixel(64, PIN, NEO_GRB + NEO_KHZ800);
+TT_Adafruit_NeoPixel strip = TT_Adafruit_NeoPixel(64, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input

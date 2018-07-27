@@ -31,7 +31,7 @@
   <http://www.gnu.org/licenses/>.
   -------------------------------------------------------------------------*/
 
-#include "TT_Adafruit_Neopixel.h"
+#include "TT_Adafruit_NeoPixel.h"
 #include "hexadecimal_colors_to_strings.h"
 
 #if defined(NRF52)
@@ -43,7 +43,7 @@
 #endif
 
 // Constructor when length, pin and type are known at compile-time:
-TT_Adafruit_Neopixel::TT_Adafruit_Neopixel(uint16_t n, uint8_t p, neoPixelType t) :
+TT_Adafruit_NeoPixel::TT_Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
   begun(false), brightness(0), pixels(NULL), endTime(0)
 {
   updateType(t);
@@ -56,7 +56,7 @@ TT_Adafruit_Neopixel::TT_Adafruit_Neopixel(uint16_t n, uint8_t p, neoPixelType t
 // read from internal flash memory or an SD card, or arrive via serial
 // command.  If using this constructor, MUST follow up with updateType(),
 // updateLength(), etc. to establish the strand type, length and pin number!
-TT_Adafruit_Neopixel::TT_Adafruit_Neopixel() :
+TT_Adafruit_NeoPixel::TT_Adafruit_NeoPixel() :
 #ifdef NEO_KHZ400
   is800KHz(true),
 #endif
@@ -65,12 +65,12 @@ TT_Adafruit_Neopixel::TT_Adafruit_Neopixel() :
 {
 }
 
-TT_Adafruit_Neopixel::~TT_Adafruit_Neopixel() {
+TT_Adafruit_NeoPixel::~TT_Adafruit_NeoPixel() {
   if(pixels)   free(pixels);
   if(pin >= 0) pinMode(pin, INPUT);
 }
 
-void TT_Adafruit_Neopixel::begin(void) {
+void TT_Adafruit_NeoPixel::begin(void) {
   if(pin >= 0) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
@@ -80,7 +80,7 @@ void TT_Adafruit_Neopixel::begin(void) {
 }
 
 // Fill the dots one after the other with a color
-void TT_Adafruit_Neopixel::colorWipe(uint32_t c, uint8_t wait) {
+void TT_Adafruit_NeoPixel::colorWipe(uint32_t c, uint8_t wait) {
   for(uint16_t i = 0; i < numPixels(); i++) {
     setPixelColor(i, c);
     show();
@@ -88,7 +88,7 @@ void TT_Adafruit_Neopixel::colorWipe(uint32_t c, uint8_t wait) {
   }
 }
 
-void TT_Adafruit_Neopixel::rainbow(uint8_t wait) {
+void TT_Adafruit_NeoPixel::rainbow(uint8_t wait) {
   uint16_t i, j;
 
   for(j = 0; j < 256; j++) {
@@ -101,7 +101,7 @@ void TT_Adafruit_Neopixel::rainbow(uint8_t wait) {
 }
 
 // Slightly different, this makes the rainbow equally distributed throughout
-void TT_Adafruit_Neopixel::rainbowCycle(uint8_t wait) {
+void TT_Adafruit_NeoPixel::rainbowCycle(uint8_t wait) {
   uint16_t i, j;
 
   for(j = 0; j < 256 * 5; j++) { // 5 cycles of all colors on wheel
@@ -115,7 +115,7 @@ void TT_Adafruit_Neopixel::rainbowCycle(uint8_t wait) {
 
 
 //Theatre-style crawling lights.
-void TT_Adafruit_Neopixel::theaterChase(uint32_t c, uint8_t wait) {
+void TT_Adafruit_NeoPixel::theaterChase(uint32_t c, uint8_t wait) {
   for (int j = 0; j < 10; j++) {  //do 10 cycles of chasing
     for (int q = 0; q < 3; q++) {
       for (uint16_t i = 0; i < numPixels(); i += 3) {
@@ -132,7 +132,7 @@ void TT_Adafruit_Neopixel::theaterChase(uint32_t c, uint8_t wait) {
   }
 }
 
-uint32_t TT_Adafruit_Neopixel::Wheel(byte WheelPos) {
+uint32_t TT_Adafruit_NeoPixel::Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
   if(WheelPos < 85) {
     return Color(255 - WheelPos * 3, 0, WheelPos * 3);
@@ -147,7 +147,7 @@ uint32_t TT_Adafruit_Neopixel::Wheel(byte WheelPos) {
   }
 }
 
-void TT_Adafruit_Neopixel::theaterChaseRainbow(uint8_t wait) {
+void TT_Adafruit_NeoPixel::theaterChaseRainbow(uint8_t wait) {
   for (int j = 0; j < 256; j++) {     // cycle all 256 colors in the wheel
     for (int q = 0; q < 3; q++) {
       for (uint16_t i = 0; i < numPixels(); i += 3) {
@@ -165,7 +165,7 @@ void TT_Adafruit_Neopixel::theaterChaseRainbow(uint8_t wait) {
 }
 
 
-void TT_Adafruit_Neopixel::updateLength(uint16_t n) {
+void TT_Adafruit_NeoPixel::updateLength(uint16_t n) {
   if(pixels) free(pixels); // Free existing data (if any)
 
   // Allocate new data -- note: ALL PIXELS ARE CLEARED
@@ -178,7 +178,7 @@ void TT_Adafruit_Neopixel::updateLength(uint16_t n) {
   }
 }
 
-void TT_Adafruit_Neopixel::updateType(neoPixelType t) {
+void TT_Adafruit_NeoPixel::updateType(neoPixelType t) {
   boolean oldThreeBytesPerPixel = (wOffset == rOffset); // false if RGBW
 
   wOffset = (t >> 6) & 0b11; // See notes in header file
@@ -206,7 +206,7 @@ extern "C" void espShow(
   uint8_t pin, uint8_t *pixels, uint32_t numBytes, uint8_t type);
 #endif // ESP8266
 
-void TT_Adafruit_Neopixel::show(void) {
+void TT_Adafruit_NeoPixel::show(void) {
 
   if(!pixels) return;
 
@@ -2072,7 +2072,7 @@ void TT_Adafruit_Neopixel::show(void) {
 }
 
 // Set the output pin number
-void TT_Adafruit_Neopixel::setPin(uint8_t p) {
+void TT_Adafruit_NeoPixel::setPin(uint8_t p) {
   if(begun && (pin >= 0)) pinMode(pin, INPUT);
     pin = p;
     if(begun) {
@@ -2086,7 +2086,7 @@ void TT_Adafruit_Neopixel::setPin(uint8_t p) {
 }
 
 // Set pixel color from separate R,G,B components:
-void TT_Adafruit_Neopixel::setPixelColor(
+void TT_Adafruit_NeoPixel::setPixelColor(
  uint16_t n, uint8_t r, uint8_t g, uint8_t b) {
 
   if(n < numLEDs) {
@@ -2108,7 +2108,7 @@ void TT_Adafruit_Neopixel::setPixelColor(
   }
 }
 
-void TT_Adafruit_Neopixel::setPixelColor(
+void TT_Adafruit_NeoPixel::setPixelColor(
  uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
   if(n < numLEDs) {
@@ -2132,7 +2132,7 @@ void TT_Adafruit_Neopixel::setPixelColor(
 }
 
 // Set pixel color from 'packed' 32-bit RGB color:
-void TT_Adafruit_Neopixel::setPixelColor(uint16_t n, uint32_t c) {
+void TT_Adafruit_NeoPixel::setPixelColor(uint16_t n, uint32_t c) {
   if(n < numLEDs) {
     uint8_t *p,
       r = (uint8_t)(c >> 16),
@@ -2158,18 +2158,18 @@ void TT_Adafruit_Neopixel::setPixelColor(uint16_t n, uint32_t c) {
 
 // Convert separate R,G,B into packed 32-bit RGB color.
 // Packed format is always RGB, regardless of LED strand color order.
-uint32_t TT_Adafruit_Neopixel::Color(uint8_t r, uint8_t g, uint8_t b) {
+uint32_t TT_Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b) {
   return ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
 // Convert separate R,G,B,W into packed 32-bit WRGB color.
 // Packed format is always WRGB, regardless of LED strand color order.
-uint32_t TT_Adafruit_Neopixel::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+uint32_t TT_Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
 // Query color from previously-set pixel (returns packed 32-bit RGB value)
-uint32_t TT_Adafruit_Neopixel::getPixelColor(uint16_t n) const {
+uint32_t TT_Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
   if(n >= numLEDs) return 0; // Out of bounds, return no color.
 
   uint8_t *p;
@@ -2210,11 +2210,11 @@ uint32_t TT_Adafruit_Neopixel::getPixelColor(uint16_t n) const {
 // Returns pointer to pixels[] array.  Pixel data is stored in device-
 // native format and is not translated here.  Application will need to be
 // aware of specific pixel data format and handle colors appropriately.
-uint8_t *TT_Adafruit_Neopixel::getPixels(void) const {
+uint8_t *TT_Adafruit_NeoPixel::getPixels(void) const {
   return pixels;
 }
 
-uint16_t TT_Adafruit_Neopixel::numPixels(void) const {
+uint16_t TT_Adafruit_NeoPixel::numPixels(void) const {
   return numLEDs;
 }
 
@@ -2230,7 +2230,7 @@ uint16_t TT_Adafruit_Neopixel::numPixels(void) const {
 // the limited number of steps (quantization) in the old data will be
 // quite visible in the re-scaled version.  For a non-destructive
 // change, you'll need to re-render the full strip data.  C'est la vie.
-void TT_Adafruit_Neopixel::setBrightness(uint8_t b) {
+void TT_Adafruit_NeoPixel::setBrightness(uint8_t b) {
   // Stored brightness value is different than what's passed.
   // This simplifies the actual scaling math later, allowing a fast
   // 8x8-bit multiply and taking the MSB.  'brightness' is a uint8_t,
@@ -2256,11 +2256,11 @@ void TT_Adafruit_Neopixel::setBrightness(uint8_t b) {
 }
 
 //Return the brightness value
-uint8_t TT_Adafruit_Neopixel::getBrightness(void) const {
+uint8_t TT_Adafruit_NeoPixel::getBrightness(void) const {
   return brightness - 1;
 }
 
-void TT_Adafruit_Neopixel::clear() {
+void TT_Adafruit_NeoPixel::clear() {
   memset(pixels, 0, numBytes);
 }
 
@@ -2315,10 +2315,10 @@ static const uint8_t PROGMEM _gammaTable[256] = {
   182,184,186,188,191,193,195,197,199,202,204,206,209,211,213,215,
   218,220,223,225,227,230,232,235,237,240,242,245,247,250,252,255};
 
-uint8_t TT_Adafruit_Neopixel::sine8(uint8_t x) const {
+uint8_t TT_Adafruit_NeoPixel::sine8(uint8_t x) const {
   return pgm_read_byte(&_sineTable[x]); // 0-255 in, 0-255 out
 }
 
-uint8_t TT_Adafruit_Neopixel::gamma8(uint8_t x) const {
+uint8_t TT_Adafruit_NeoPixel::gamma8(uint8_t x) const {
   return pgm_read_byte(&_gammaTable[x]); // 0-255 in, 0-255 out
 }

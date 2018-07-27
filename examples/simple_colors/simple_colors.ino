@@ -1,4 +1,4 @@
-#include <TT_Adafruit_Neopixel.h>
+#include <TT_Adafruit_NeoPixel.h>
 #include <hexadecimal_colors_to_strings.h>
 
 #ifdef __AVR__
@@ -16,7 +16,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-TT_Adafruit_Neopixel strip = TT_Adafruit_Neopixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+TT_Adafruit_NeoPixel strip = TT_Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
