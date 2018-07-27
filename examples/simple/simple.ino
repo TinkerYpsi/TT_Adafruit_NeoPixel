@@ -1,7 +1,7 @@
 // NeoPixel Ring simple sketch (c) 2013 Shae Erisson
 // released under the GPLv3 license to match the rest of the AdaFruit NeoPixel library
 
-#include <TT_Adafruit_Neopixel.h>
+#include <TT_Adafruit_NeoPixel.h>
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
@@ -16,7 +16,7 @@
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
-TT_Adafruit_Neopixel pixels = TT_Adafruit_Neopixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+TT_Adafruit_NeoPixel pixels = TT_Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 int delayval = 500; // delay for half a second
 
